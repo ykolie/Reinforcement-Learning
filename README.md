@@ -11,12 +11,12 @@ In this course, you will dive into the world of RLHF and its application in alig
 <img width="1535" height="780" alt="1_2" src="https://github.com/user-attachments/assets/1c602499-e8cf-4c20-b637-e375e0c27b8a" />
 
 3. 📊 **Datasets for RLHF Training**: Examine the "preference" and "prompt" datasets crucial for RLHF training.
-<img width="1535" height="780" alt="1_2" src="https://github.com/user-attachments/assets/06775a72-6687-460b-adcb-8b6f3ecd8f31" />
+<img width="892" height="634" alt="2_1" src="https://github.com/user-attachments/assets/25365224-6bcc-46a0-8682-ddcd5c3e4687" />
+
 
 3. ⚙️ **Fine-Tuning with Google Cloud Pipeline Components Library**: Practice fine-tuning the Llama 2 model using RLHF and the open-source Google Cloud Pipeline Components Library.
-<p align="center">
-<img src="images/3_1.png" height="300"> 
-</p>
+<img width="991" height="811" alt="3_1" src="https://github.com/user-attachments/assets/8967f0f9-775c-4ace-8bfb-b0f9412e806e" />
+
 
 4. 📈 **Model Evaluation**: Assess the tuned LLM against the original base model using loss curves and the "Side-by-Side (SxS)" method.
 

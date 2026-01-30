@@ -1,4 +1,4 @@
-# 🎯 [Reinforcement Learning from Human Feedback]
+# 🎯 Reinforcement Learning from Human Feedback
 
 💻 Welcome to the "Reinforcement Learning from Human Feedback" overview! This overview, will guide you through the process of aligning Large Language Models (LLMs) with human values and preferences using Reinforcement Learning from Human Feedback (RLHF).
 

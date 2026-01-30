@@ -8,10 +8,7 @@ In this course, you will dive into the world of RLHF and its application in alig
 1. 📚 **Conceptual Understanding of RLHF**: Explore the RLHF training process and understand the importance of aligning LLMs with human values and preferences.<br />
     **Supervised Fine Tuning :** {input text, summary}<br />
     **RLHF :**                   {input text, summary 1, summary 2, human preference}
-<p align="center">
-<img src="images/1_1.png" height="200"> 
-<img src="images/1_2.png" height="350"> 
-</p>
+<img width="1535" height="780" alt="1_2" src="https://github.com/user-attachments/assets/1c602499-e8cf-4c20-b637-e375e0c27b8a" />
 
 3. 📊 **Datasets for RLHF Training**: Examine the "preference" and "prompt" datasets crucial for RLHF training.
 <p align="center">

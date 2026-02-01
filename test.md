@@ -1,25 +1,45 @@
-RLHF is a technique we can use to try and better align an LLM's output with user intention and preference. First i'm going to give you a conceptual overview of RLHF.
+RLHF is a technique we can use to try and better align an LLM's output with user intention and preference. 
+
+Here's a conceptual overview of RLHF.
 
 Let's say that we want to tune a model on a summarization task.
 <img width="1916" height="959" alt="picture 1" src="https://github.com/user-attachments/assets/c9b413ad-a076-433a-bae7-816c4887ae7a" />
 
-We might start by gathering some text samples to summarize and then have humans produce a summary for each input. So for example, here we have the input text, before I go to university, I want to take a road trip in Europe. I've lived in several European cities, but there's still a lot I haven't seen, etc.
+We might start by gathering some text samples to summarize and then have humans produce a summary for each input. So for example, here we have the input text, 
 
-And then, we have a corresponding summary of that text. The user wants to take a road trip in Europe before university. They want to see as much as possible in a short time, and they're wondering if they should go to places that are significant from their childhood or places they have never seen. We can use these human-generated summaries to create pairs of input text and summary, and we could train a model directly on a bunch of these pairs. But the thing is, there's no one correct way to summarize a piece of text. Natural language is flexible, and there are often many ways to say the same thing. 
+""before I go to university, I want to take a road trip in Europe. I've lived in several European cities, but there's still a lot I haven't seen, etc.""
+
+And then, we have a corresponding summary of that text. 
+
+""The user wants to take a road trip in Europe before university. They want to see as much as possible in a short time, and they're wondering if they should go to places that are significant from their childhood or places they have never seen.""
+
+We can use these human-generated summaries to create pairs of input text and summary, and we could train a model directly on a bunch of these pairs. But the thing is, there's no one correct way to summarize a piece of text. Natural language is flexible, and there are often many ways to say the same thing. 
 <img width="1915" height="957" alt="picture 2" src="https://github.com/user-attachments/assets/db017deb-2fe7-452d-a6cd-538dad11a0ec" />
 
 For example, here's an equally valid summary. And in fact, there are many more valid summaries we could write. Each summary might be technically correct, but different people, different groups of people, different audiences will all have a preference. And preferences are hard to quantify. Some problems like entity extraction or classification have correct answers, but sometimes the task we want to teach the model doesn't have a clear objective best answer.
 <img width="1908" height="952" alt="picture 3" src="https://github.com/user-attachments/assets/4ea76861-2297-498d-bf7c-0d62b5ee838a" />
 
-So, instead of trying to find the best summary for a particular piece of input text, we're gonna frame this problem a little differently. We're going to gather information on human preferences, and to do that, we'll provide a human labeler with two candidate summaries and ask the labeler to pick which one they prefer. And instead of the standard supervised tuning process where we tune the model to map an input to a single correct answer, we'll use reinforcement learning to tune the model to map an input to a single correct answer, we'll use reinforcement learning to tune the model to produce responses that are aligned with human preferences. So how does all this work? Well, it's an evolving area of research and there are a lot of variations and how we might implement RLHF specifically, but the high level themes are the same.
+So, instead of trying to find the best summary for a particular piece of input text, we're gonna frame this problem a little differently. 
+
+We're going to gather information on human preferences, and to do that, we'll provide a human labeler with two candidate summaries and ask the labeler to pick which one they prefer. And instead of the standard supervised tuning process where we tune the model to map an input to a single correct answer, we'll use reinforcement learning to tune the model to map an input to a single correct answer, we'll use reinforcement learning to tune the model to produce responses that are aligned with human preferences. 
+
+So how does all this work? Well, it's an evolving area of research and there are a lot of variations and how we might implement RLHF specifically, but the high level themes are the same.
 <img width="1910" height="958" alt="picture 4" src="https://github.com/user-attachments/assets/ef2b8de7-cce6-4f8a-965a-78b2f1154528" />
 
-RLHF consists of three stages. First, we create a preference data set. Then, we use this preference data set to train a reward model with supervised learning. And then, we use the reward model in a reinforcement learning loop to fine tune our base large language model. Let's look at each of these steps in detail.
+RLHF consists of three stages. 
+
+* First, we create a preference data set.
+* Then, we use this preference data set to train a reward model with supervised learning.
+* And then, we use the reward model in a reinforcement learning loop to fine tune our base large language model.
+
+Let's look at each of these steps in detail.
 <img width="1908" height="958" alt="picture 5" src="https://github.com/user-attachments/assets/26add048-ffee-418b-b7d0-d139b62477b8" />
 
 First things first, we're going to start with the large language model that we want to tune. In other words, the base LLM.
 
-In L2-L5 we tune the open source LLMA2 Model. But before we actually do any model tuning, we're going to use this base LLM to generate completions for a set of prompts. So for example, we might send the input prompt, summarize the following text, I want to start gardening, but et cetera. And we would get the model to generate multiple output completions for the same prompt. And then, we have human labelers rate these completions.
+In L2-L5 we tune the open source LLMA2 Model. But before we actually do any model tuning, we're going to use this base LLM to generate completions for a set of prompts. 
+
+So for example, we might send the input prompt, summarize the following text, I want to start gardening, but et cetera. And we would get the model to generate multiple output completions for the same prompt. And then, we have human labelers rate these completions.
 
 Now, the first way you might think to do this is to have the human labelers indicate on some absolute scale how good the completion is. But this doesn't yield the best results in practice because scales like this are subjective and they tend to vary across people.
 <img width="1910" height="959" alt="picture 6" src="https://github.com/user-attachments/assets/f7dd70ce-c3b7-481a-bb23-5829d68d29bc" />

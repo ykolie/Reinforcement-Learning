@@ -1,7 +1,4 @@
-RLHF is a technique we can use to try and better align an LLM's
-output with user intention and preference.
-
-First i'm going to give you a conceptual overview of RLHF.
+RLHF is a technique we can use to try and better align an LLM's output with user intention and preference. First i'm going to give you a conceptual overview of RLHF.
 
 Let's say that we want to tune a model on a summarization task.
 <img width="1916" height="959" alt="picture 1" src="https://github.com/user-attachments/assets/c9b413ad-a076-433a-bae7-816c4887ae7a" />
@@ -9,156 +6,33 @@ Let's say that we want to tune a model on a summarization task.
 We might start by gathering some text samples to summarize and then have humans produce a summary for each input. So for example, here we have the input text, before I go to university, I want to take a road trip in Europe. I've lived in several European cities, but there's still a lot I haven't seen, etc.
 
 And then, we have a corresponding summary of that text. The user wants to take a road trip in Europe before university. They want to see as much as possible in a short time, and they're wondering if they should go to places that are significant from their childhood or places they have never seen. We can use these human-generated summaries to create pairs of input text and summary, and we could train a model directly on a bunch of these pairs. But the thing is, there's no one correct way to summarize a piece of text. Natural language is flexible, and there are often many ways to say the same thing. 
+<img width="1915" height="957" alt="picture 2" src="https://github.com/user-attachments/assets/db017deb-2fe7-452d-a6cd-538dad11a0ec" />
 
-"INSERT PICTURE 2 HERE"
+For example, here's an equally valid summary. And in fact, there are many more valid summaries we could write. Each summary might be technically correct, but different people, different groups of people, different audiences will all have a preference. And preferences are hard to quantify. Some problems like entity extraction or classification have correct answers, but sometimes the task we want to teach the model doesn't have a clear objective best answer.
+<img width="1908" height="952" alt="picture 3" src="https://github.com/user-attachments/assets/4ea76861-2297-498d-bf7c-0d62b5ee838a" />
 
-For example, here's an equally valid summary.
+So, instead of trying to find the best summary for a particular piece of input text, we're gonna frame this problem a little differently. We're going to gather information on human preferences, and to do that, we'll provide a human labeler with two candidate summaries and ask the labeler to pick which one they prefer. And instead of the standard supervised tuning process where we tune the model to map an input to a single correct answer, we'll use reinforcement learning to tune the model to map an input to a single correct answer, we'll use reinforcement learning to tune the model to produce responses that are aligned with human preferences. So how does all this work? Well, it's an evolving area of research and there are a lot of variations and how we might implement RLHF specifically, but the high level themes are the same.
+<img width="1910" height="958" alt="picture 4" src="https://github.com/user-attachments/assets/ef2b8de7-cce6-4f8a-965a-78b2f1154528" />
 
-And in fact, there are many more valid summaries we could write.
+RLHF consists of three stages. First, we create a preference data set. Then, we use this preference data set to train a reward model with supervised learning. And then, we use the reward model in a reinforcement learning loop to fine tune our base large language model. Let's look at each of these steps in detail.
+<img width="1908" height="958" alt="picture 5" src="https://github.com/user-attachments/assets/26add048-ffee-418b-b7d0-d139b62477b8" />
 
-Each summary might be technically correct,
+First things first, we're going to start with the large language model that we want to tune. In other words, the base LLM.
 
-but different people, different groups of people,
+In L2-L5 we tune the open source LLMA2 Model. But before we actually do any model tuning, we're going to use this base LLM to generate completions for a set of prompts. So for example, we might send the input prompt, summarize the following text, I want to start gardening, but et cetera. And we would get the model to generate multiple output completions for the same prompt. And then, we have human labelers rate these completions.
 
-different audiences will all have a preference.
+Now, the first way you might think to do this is to have the human labelers indicate on some absolute scale how good the completion is. But this doesn't yield the best results in practice because scales like this are subjective and they tend to vary across people.
+<img width="1910" height="959" alt="picture 6" src="https://github.com/user-attachments/assets/f7dd70ce-c3b7-481a-bb23-5829d68d29bc" />
 
-And preferences are hard to quantify.
+Instead, one way of doing this that's worked pretty well is to have the human labeler compare two different output completions for the same input prompt, and then specify which one they prefer. This is the dataset that I referenced earlier, and it's called a Preference Dataset.
 
-Some problems like entity extraction or
+The key takeaway is that the preference dataset indicates a human labeler's preference between two possible model outputs for the same input. Now, it's important to note that this dataset captures the preferences of the human labelers, but not human preference in general. Creating a preference dataset can be one of the trickiest parts of this process, because first you need to define your alignment criteria.
 
-classification have correct answers, but sometimes the task we
+* What are you trying to achieve by tuning?
+* Do you want to make the model more useful, less toxic, more positive, etc?
 
-wanna teach the model doesn't have a clear objective best answer.
-
-So, instead of trying to find the best summary for a particular piece
-
-of input text, we're gonna frame this problem
-
-a little differently.
-
-We're going to gather information on human preferences, and
-
-to do that, we'll provide a human labeler with two candidate
-
-summaries and ask the labeler to pick which one they prefer.
-
-And instead of the standard supervised
-
-tuning process where we tune the model to map an input to
-
-a single correct answer, we'll use reinforcement learning to
-
-tune the model to map an input to a single correct answer, we'll use
-
-reinforcement learning to tune the model to produce responses
-
-that are aligned with human preferences.
-
-So how does all this work?
-
-Well, it's an evolving area of research and there are a lot of variations
-
-and how we might implement RLHF specifically, but
-
-the high level themes are the same.
-
-RLHF consists of three stages.
-
-First, we create a preference data set.
-
-Then, we use this preference data set to train a
-
-reward model with supervised learning. And then,
-
-we use the reward model in a reinforcement learning
-
-loop to fine tune our base large language model. Let's
-
-look at each of these steps in detail.
-
-And don't worry if you're totally new to reinforcement
-
-learning.
-
-You don't need any background for this course.
-
-First things first, we're going to start with
-
-the large language model that we want to tune. In
-
-other words, the base LLM.
-
-In this course, we're going to be tuning the
-
-open source LLMA2 Model, and you'll get to see how that works
-
-in a later lesson. But before we actually do any
-
-model tuning, we're going to use this base LLM to
-
-generate completions for a set of prompts.
-
-So for example, we might send the input prompt,
-
-summarize the following text, I want to start gardening,
-
-but et cetera. And we would get the model to generate multiple
-
-output completions for the same prompt.
-
-And then, we have human labelers rate these completions.
-
-Now, the first way you might think to do this is to have
-
-the human labelers indicate on some absolute scale
-
-how good the completion is. But this doesn't yield the best results
-
-in practice because scales like this are subjective
-
-and they tend to vary across people.
-
-Instead, one way of doing this that's worked pretty well is to have the human
-
-labeler compare two different output completions for the
-
-same input prompt, and then specify which one they prefer.
-
-This is the dataset that we talked about earlier,
-
-and it's called a Preference Dataset.
-
-In the next lesson, you'll get a chance to take
-
-a look at one of these datasets in detail, but
-
-for now, the key takeaway is that the preference dataset indicates
-
-a human labeler's preference between two possible
-
-model outputs for the same input.
-
-Now, it's important to note that this dataset captures the preferences
-
-of the human labelers, but not human preference in general.
-
-Creating a preference dataset can be one of
-
-the trickiest parts of this process, because first you need
-
-to define your alignment criteria.
-
-What are you trying to achieve by tuning?
-
-Do you want to make the model more useful, less toxic, more positive,
-
-etc?
-
-You'll need to be clear on this so that you can provide specific
-
-instructions and choose the correct labelers for the task. But
-
-once you've done that, step one is complete.
+You'll need to be clear on this so that you can provide specific instructions and choose the correct labelers for the task. 
+Once you've done that, step one is complete.
 
 Next, we move on to step two and we take this preference dataset,
 

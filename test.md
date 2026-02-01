@@ -1,55 +1,18 @@
 RLHF is a technique we can use to try and better align an LLM's
 output with user intention and preference.
 
-In this first lesson, we're going to dive into a
-
-conceptual overview of RLHF.
-
-Let's get started.
+First i'm going to give you a conceptual overview of RLHF.
 
 Let's say that we want to tune a model on a summarization task.
+<img width="1916" height="959" alt="picture 1" src="https://github.com/user-attachments/assets/c9b413ad-a076-433a-bae7-816c4887ae7a" />
 
-We might start by gathering some text samples to
+We might start by gathering some text samples to summarize and then have humans produce a summary for each input. So for example, here we have the input text, before I go to university, I want to take a road trip in Europe. I've lived in several European cities, but there's still a lot I haven't seen, etc.
 
-summarize and then have humans produce a summary
+And then, we have a corresponding summary of that text. The user wants to take a road trip in Europe before university. They want to see as much as possible in a short time, and they're wondering if they should go to places that are significant from their childhood or places they have never seen. We can use these human-generated summaries to create pairs of input text and summary, and we could train a model directly on a bunch of these pairs. But the thing is, there's no one correct way to summarize a piece of text. Natural language is flexible, and there are often many ways to say the same thing. 
 
-for each input.
+"INSERT PICTURE 2 HERE"
 
-So for example, here we have the input text,
-
-before I go to university, I want to take a road trip in Europe.
-
-I've lived in several European cities, but
-
-there's still a lot I haven't seen, etc.
-
-And then, we have a corresponding summary of that text.
-
-The user wants to take a road trip in Europe before university.
-
-They want to see as much as possible in a short time,
-
-and they're wondering if they should go to places that
-
-are significant from their childhood or places they
-
-have never seen. We can use these human-generated summaries
-
-to create pairs of input text and summary, and
-
-we could train a model directly on a bunch
-
-of these pairs.
-
-But the thing is, there's no one correct way to
-
-summarize a piece of text.
-
-Natural language is flexible, and there are often many
-
-ways to say the same thing. For example, here's
-
-an equally valid summary.
+For example, here's an equally valid summary.
 
 And in fact, there are many more valid summaries we could write.
 

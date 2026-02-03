@@ -128,3 +128,6 @@ You could potentially have one base model with several distinct sets of tune par
 In L2-L5 we tune the LLAMA2 Model, we're going to be using a parameter efficient implementation.
 
 This means that the training job won't update all of the base large language model weights, only a smaller subset of them based on a parameter efficient tuning technique.
+
+Source:
+1. DeepLearnin ai reinforement learning lab

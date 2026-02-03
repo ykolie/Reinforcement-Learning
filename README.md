@@ -3,7 +3,9 @@
 ## Overview
 Large language models (LLMs) are trained on human-generated text, but additional methods are needed to align an LLM with human values and preferences.
 
-Reinforcement Learning from Human Feedback (RLHF) is a method for aligning LLMs with human values and preferences. 
+Reinforcement Learning from Human Feedback (RLHF) is a method for aligning LLMs with human values and preferences. It's a branch of machine learning in which a model learns by acting, receiving feedback, and readjusting itself to maximise future feedback. 
+
+In reinforcement fine-tuning (RFT), that reward signal comes from a custom grader that you define for your task. For every prompt in your dataset, the platform samples multiple candidate answers, runs your grader to score them, and applies a policy-gradient update that nudges the model toward answers with higher scores. This cycle—sample, grade, update—continues across the dataset (and successive epochs) until the model reliably optimizes for your grader’s understanding of quality. The grader encodes whatever you care about—accuracy, style, safety, or any metric—so the resulting fine-tuned model reflects those priorities and you don't have to manage reinforcement learning infrastructure.
 
 1. **Gain a High-Level Understanding of RLHF**: Explore RLHF training processs and the importance of aligning LLMs with human values and preferences.<br />
     **Supervised Fine Tuning :** {input text, summary}<br />

@@ -30,4 +30,3 @@ Reinforcement Learning from Human Feedback (RLHF) is a method for aligning LLMs 
 
 Sources:
 1. https://learn.deeplearning.ai/courses/reinforcement-learning-from-human-feedback/information
-2. https://huyenchip.com/2023/05/02/rlhf.html
